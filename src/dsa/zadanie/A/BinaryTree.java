@@ -14,7 +14,7 @@ class BinaryTree {
 
     Node insert(Node node, int vek,String key) {
 
-        System.out.println("VKLADAM: (" + key + ")");
+        //System.out.println("VKLADAM: (" + key + ")");
         int balance;
 
         if (node == null) {
@@ -25,17 +25,19 @@ class BinaryTree {
         // System.out.println(s3.compareTo(s1));//-1(because s3 < s1 )
         // vek.compareTo(node.getValue())<0
         if (key.compareTo(node.name) < 0){
-           System.out.println("vlavo " + key + "<" + node.name );
-            node.left= insert(node.getLeft(),vek,key);
+           // System.out.println("vlavo " + key + "<" + node.name );
+            node.left= insert(node.left,vek,key);
 
-        } else {
-            System.out.println("pravo " + key + ">" + node.name );
+        }
+
+        if( key.compareTo(node.name) > 0){
+           // System.out.println("pravo " + key + ">" + node.name );
             node.right = insert(node.right,vek,key);
         }
 
         node.height = Math.max(sumHeight(node.left), sumHeight(node.right)) + 1;
         balance = getBalance(node);
-        System.out.println("["+ node.name +"] h - > " + node.height + " b -> " + balance);
+       // System.out.println("["+ node.name +"] h - > " + node.height + " b -> " + balance);
 
 
         //if s1 > s2, it returns positive number
@@ -44,9 +46,12 @@ class BinaryTree {
         //System.out.println(s3.compareTo(s1));//-1(because s3 < s1 )
         // vek < node.left.value
 
+
+
+
         if (balance > 1 ){
             if (( key.compareTo(node.left.name) < 0)){
-                System.out.println("-> Right Rotate");
+                //System.out.println("-> Right Rotate");
                 return rightRotate(node);
             }
 
@@ -57,7 +62,7 @@ class BinaryTree {
         //vek > node.right.value
         if (balance < -1){
             if ((key.compareTo(node.right.name) > 0)){
-                System.out.println("-> Left Rotate");
+              //  System.out.println("-> Left Rotate");
                 return leftRotate(node);
             }
         }
@@ -71,7 +76,7 @@ class BinaryTree {
 
         if (balance > 1 ) {
             if ((key.compareTo(node.left.name) > 0)){
-                System.out.println("-> Left Right Rotate");
+               // System.out.println("-> Left Right Rotate");
                 return leftRightRotate(node);
             }
 
@@ -80,13 +85,12 @@ class BinaryTree {
         //if (balance < -1 && value < node.right.value)
         if (balance < -1 ) {
             if ( key.compareTo(node.right.name) < 0) {
-                System.out.println("-> Right Left Rotate");
+               // System.out.println("-> Right Left Rotate");
                 return rightLeftRotate(node);
             }
 
 
         }
-
 
         return node;
     }
@@ -115,7 +119,7 @@ class BinaryTree {
         // System.out.println(s3.compareTo(s1));//-1(because s3 < s1 )
         // vek.compareTo(node.getValue())<0
         if (key.compareTo(node.name) < 0){
-           // System.out.println("LEFT - [ " + key+  " ] < [" + node.name + "]");
+            // System.out.println("LEFT - [ " + key+  " ] < [" + node.name + "]");
             node = search(node.left,key);
 
         } else if (key.compareTo(node.name)>0)  {
@@ -131,30 +135,39 @@ class BinaryTree {
     }
 
     Node leftRightRotate(Node node){
-        System.out.println("ZROTOVAL SOM HAHAHA LEFT RIGHT");
+
+        //System.out.println("LEFT-RIGHT");
+
         node.left = leftRotate(node.left);
 
-        Node rotationNode = node.left;
+        Node rotationNode = node.left; //<-----
         node.left = rotationNode.right;
         rotationNode.right = node;
 
         node.height = Math.max(sumHeight(node.left), sumHeight(node.right)) + 1;
         rotationNode.height = Math.max(sumHeight(rotationNode.left), sumHeight(rotationNode.right)) + 1;
 
+        node.balance = getBalance(node);
+        rotationNode.balance = getBalance(rotationNode);
 
         return rotationNode;
     }
 
     Node rightLeftRotate(Node node){
-        System.out.println("ZROTOVAL SOM RIGHT LEFT");
+        //System.out.println("RIGHT-LEFT [" + node.name + "]");
 
-        System.out.println("Pred returnom");
+        node.right = rightRotate(node.right);
+
         Node rotationNode = node.right;
         node.right = rotationNode.left;
         rotationNode.left = node;
 
+        node.balance = getBalance(node);
+        rotationNode.balance = getBalance(rotationNode);
+
         node.height = Math.max(sumHeight(node.left), sumHeight(node.right)) + 1;
         rotationNode.height = Math.max(sumHeight(rotationNode.left), sumHeight(rotationNode.right)) + 1;
+
 
 
         return rotationNode;
@@ -162,28 +175,34 @@ class BinaryTree {
     }
 
     Node rightRotate(Node node){
+       // System.out.println("RIGHT");
         Node rotationNode = node.left;
         node.left = rotationNode.right;
         rotationNode.right = node;
 
         node.height = Math.max(sumHeight(node.left), sumHeight(node.right)) + 1;
         rotationNode.height = Math.max(sumHeight(rotationNode.left), sumHeight(rotationNode.right)) + 1;
+
+        node.balance = getBalance(node);
+        rotationNode.balance = getBalance(rotationNode);
         //System.out.println("ZROTOVAL SOM HAHAHA");
         return rotationNode;
     }
 
     Node leftRotate(Node node){
-        System.out.println("LEFTUJEM");
+
+        //System.out.println("LEFT");
         Node rotationNode = node.right;
         node.right = rotationNode.left;
         rotationNode.left = node;
 
 
-
-
         node.height = Math.max(sumHeight(node.left), sumHeight(node.right)) + 1;
         rotationNode.height = Math.max(sumHeight(rotationNode.left), sumHeight(rotationNode.right)) + 1;
-       // System.out.println("ZROTOVAL SOM HAHAHA vlavo");
+
+        node.balance = getBalance(node);
+        rotationNode.balance = getBalance(rotationNode);
+
         return rotationNode;
 
     }
@@ -207,8 +226,8 @@ class BinaryTree {
             right = sumHeight(node.right);
 
             balance = left - right;
-            System.out.println("getBalance NODE: [" + node.getName() + "] ");
-            System.out.println(sumHeight(node.left) +" - " + sumHeight(node.right) );
+           // System.out.println("getBalance NODE: [" + node.getName() + "] ");
+           // System.out.println(sumHeight(node.left) +" - " + sumHeight(node.right) );
             return balance;
         }
 
