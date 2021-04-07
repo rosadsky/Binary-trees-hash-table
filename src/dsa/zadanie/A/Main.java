@@ -10,35 +10,10 @@ class Main{
 
     public static void main(String[] args) {
 
-        //((s1<s2) < 0)
-        //((s1>s2) > 0)
 
-        //test_0();
-        //test_1();
+        test_0();
+        test_1();
         test_2();
-       // miniTest();
-
-    }
-
-
-
-    public static void test_1(){
-
-        System.out.println("------------------------\n--> VSTUP | 20 000 | <--");
-        long start = System.currentTimeMillis();
-        BinaryTree strom = new BinaryTree();
-        String key = null;
-
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/ExportCSV-2.csv";
-        vkladanieStromu(path,strom);
-
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-
-        System.out.println("Time " + timeElapsed + "ms...");
-
-        strom.searchKey(strom.root,"Gil Mcnally");
-        strom.searchKey(strom.root,"Jacob Gibbons");
 
 
     }
@@ -67,6 +42,27 @@ class Main{
 
     }
 
+    public static void test_1(){
+
+        System.out.println("------------------------\n--> VSTUP | 20 000 | <--");
+        long start = System.currentTimeMillis();
+        BinaryTree strom = new BinaryTree();
+        String key = null;
+
+        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/ExportCSV-2.csv";
+        vkladanieStromu(path,strom);
+
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+
+        System.out.println("Time " + timeElapsed + "ms...");
+
+        strom.searchKey(strom.root,"Gil Mcnally");
+        strom.searchKey(strom.root,"Jacob Gibbons");
+
+
+    }
+
     public static void test_2(){
 
         System.out.println("------------------------\n--> VSTUP | 100 000 | <--");
@@ -80,12 +76,12 @@ class Main{
         long finish = System.currentTimeMillis();
         long timeElapsed = finish - start;
 
-        System.out.println("Time " + timeElapsed + "ms...");
-
-        strom.searchKey(strom.root,"Gil Mcnally");
-        strom.searchKey(strom.root,"Jacob Gibbons");
-
-
+        System.out.println("Time of inserting " + timeElapsed + "ms...");
+        long startSearch = System.currentTimeMillis();
+       vyhladavanieVStrome(strom);
+        long finishSearch = System.currentTimeMillis();
+        long timeElapsedSearch = finish - start;
+        System.out.println("Time of searching " + timeElapsed + "ms...");
     }
 
     public static void vkladanieStromu(String path,BinaryTree strom){
@@ -108,29 +104,27 @@ class Main{
 
     }
 
-    public static void miniTest(){
-        System.out.println("------------------------\n--> VSTUP | MOJ VLASTNY | <--");
-        long start = System.currentTimeMillis();
-        BinaryTree strom = new BinaryTree();
-        String key = null;
+    public static void vyhladavanieVStrome(BinaryTree strom){
+        String line = "";
+        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/SearchKeys.csv";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
 
+            while ((line = br.readLine()) != null){
+                String[] values = line.split(",");
+                //System.out.println("Name " + values[0] + " age " + values[1] );
+                strom.searchKey(strom.root,values[0]);
 
-        strom.root = strom.insert(strom.root, 14,"a");
-        strom.root = strom.insert(strom.root, 14,"d");
-        strom.root = strom.insert(strom.root, 14,"c");
+            }
 
-
-
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-
-        System.out.println("Time " + timeElapsed + "ms...");
-
-        //strom.searchKey(strom.root,"Gil Mcnally");
-       // strom.searchKey(strom.root,"Jacob Gibbons");
-
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
+
 
 
 

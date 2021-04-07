@@ -74,7 +74,7 @@ class BinaryTree {
         //((s1<s2) < 0)
         //((s1>s2) > 0)
 
-        if (balance > 1 ) {
+        if (balance > 1) {
             if ((key.compareTo(node.left.name) > 0)){
                // System.out.println("-> Left Right Rotate");
                 return leftRightRotate(node);
@@ -83,7 +83,7 @@ class BinaryTree {
         }
 
         //if (balance < -1 && value < node.right.value)
-        if (balance < -1 ) {
+        if (balance < -1) {
             if ( key.compareTo(node.right.name) < 0) {
                // System.out.println("-> Right Left Rotate");
                 return rightLeftRotate(node);
