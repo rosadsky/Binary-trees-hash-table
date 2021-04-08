@@ -2,6 +2,7 @@ package dsa.zadanie.A;
 
 import dsa.zadanie.*;
 
+
 import javax.swing.plaf.synth.SynthTextAreaUI;
 
 class BinaryTree {
@@ -231,6 +232,15 @@ class BinaryTree {
             return balance;
         }
 
+    }
+    static void preOrder(Node node)
+    {
+        if (node != null)
+        {
+            System.out.print(node.name+" \n");
+            preOrder(node.left);
+            preOrder(node.right);
+        }
     }
 
     public Node getRoot() {

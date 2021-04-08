@@ -5,6 +5,10 @@ import dsa.*;
 
 import dsa.zadanie.*;
 
+
+import static dsa.zadanie.A.BinaryTree.preOrder;
+
+
 class Main{
 
 
@@ -12,8 +16,9 @@ class Main{
 
 
         test_0();
-        test_1();
-        test_2();
+        //test_1();
+       // test_2();
+
 
 
     }
@@ -39,6 +44,8 @@ class Main{
         strom.searchKey(strom.root,"Henry Robe");
         strom.searchKey(strom.root,"Roman Osadsky");
 
+        preOrder(strom.root);
+        System.out.println("vyska stromu " + maxDepth(strom.root));
 
     }
 
@@ -123,8 +130,26 @@ class Main{
             e.printStackTrace();
         }
 
+
     }
 
+    static int maxDepth(Node node)
+    {
+        if (node == null)
+            return 0;
+        else
+        {
+            /* compute the depth of each subtree */
+            int lDepth = maxDepth(node.left);
+            int rDepth = maxDepth(node.right);
+
+            /* use the larger one */
+            if (lDepth > rDepth)
+                return (lDepth + 1);
+            else
+                return (rDepth + 1);
+        }
+    }
 
 
 
