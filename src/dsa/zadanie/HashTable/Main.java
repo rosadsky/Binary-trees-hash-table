@@ -16,14 +16,6 @@ public class Main {
         //System.out.println(279%11);
 
         HashTable table = new HashTable();
-       /* table.insert("Roman Osadsky",12);
-        table.insert("Jozef Pidik",12);
-        table.insert("Jozef Picik",12);
-        table.insert("Jozo Procko",12);
-        table.insert("Jozo Procka",12);
-        table.insert("Jozo Prodka",12);
-        table.insert("Joyo Prodka",12);
-*/
 
         vkladanieDoTabulky(table);
         System.out.println("---VYPIS---");
@@ -57,7 +49,7 @@ public class Main {
 
     public static void vkladanieDoTabulky(HashTable table){
         String line = "";
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/ExportCSV-2.csv";
+        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
 

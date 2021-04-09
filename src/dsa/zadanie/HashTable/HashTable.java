@@ -37,7 +37,7 @@ public class HashTable {
     }
 
     System.out.println("HASH CALC "+ hash(name) + " % " + dlzkaPola);
-    hash = ((hash(name)^dlzkaPola)%dlzkaPola);
+    hash = (hash(name)%dlzkaPola);
     System.out.println("HASH NA INSERT [" +hash + "] na insert " + name);
 
     if(array[hash].isEmpty()){
@@ -84,12 +84,12 @@ public class HashTable {
         {
             int asciiValue = name.charAt(i);
 
-            hash = hash + asciiValue;
+            hash = 31*hash + asciiValue;
             //System.out.println(name.charAt(i) + "=" + asciiValue);
         }
        // System.out.println("ASCII of " + name + "=" + hash);
 
-        return hash;
+        return Math.abs(hash);
 
     }
 
@@ -108,13 +108,15 @@ public class HashTable {
                         counter++;
 
                     }
-                } else {
-
                 }
+            }
+
+            if (array[i].isEmpty()){
+                neobsadene++;
             }
             System.out.println("X");
         }
-        System.out.println("OPAKOVANIA: " + opakovania +" DLZKA" + dlzkaPola + " COUNTER " + counter);
+        System.out.println("OPAKOVANIA: " + opakovania +" DLZKA " + dlzkaPola+ " NEOBSADENE "+ neobsadene + " COUNTER " + counter);
     }
 
 }
