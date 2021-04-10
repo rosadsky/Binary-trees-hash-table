@@ -1,5 +1,10 @@
 package dsa.zadanie.BinaryTreePrevzata;
 
+/*
+* https://www.geeksforgeeks.org/splay-tree-set-2-insert-delete/
+*
+*  */
+
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,6 +12,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 class SplayTree{
+    static int pocetVstupov = 0;
+
     static class node {
         int vek;
         String name;
@@ -14,16 +21,17 @@ class SplayTree{
     };
 
     static node newNode(int key,String name) {
-        System.out.println("NEW NODE :(" + name+ ")");
+        //System.out.println("NEW NODE :(" + name+ ")");
         node Node = new node();
         Node.vek = key;
         Node.name = name;
         Node.left = Node.right = null;
+        pocetVstupov++;
         return (Node);
     }
 
     static node rightRotate(node x) {
-        System.out.println("RIGHT ROTATION");
+        //System.out.println("RIGHT ROTATION");
         node y = x.left;
         x.left = y.right;
         y.right = x;
@@ -31,7 +39,7 @@ class SplayTree{
     }
 
     static node leftRotate(node x) {
-        System.out.println("LEFT ROTATION");
+      //  System.out.println("LEFT ROTATION");
         node y = x.right;
         x.right = y.left;
         y.left = x;
@@ -57,7 +65,7 @@ class SplayTree{
 
 
             if (root.left.name.compareTo(name) > 0) {
-                System.out.println("ZIG-ZIG");
+                //System.out.println("ZIG-ZIG");
                 // First recursively bring the
                 // key as root of left-left
                 root.left.left = splay(root.left.left, name);
@@ -69,7 +77,7 @@ class SplayTree{
             //root.left.key < key
             else if (root.left.name.compareTo(name) < 0) // Zig-Zag (Left Right)
                 {
-                    System.out.println("ZIG-ZAG - left right");
+                   // System.out.println("ZIG-ZAG - left right");
                 // First recursively bring
                 // the key as root of left-right
                 root.left.right = splay(root.left.right, name);
@@ -96,7 +104,7 @@ class SplayTree{
 
             if (root.right.name.compareTo(name) > 0)
             {
-                System.out.println("ZIG-ZAG - right left");
+               // System.out.println("ZIG-ZAG - right left");
                 // Bring the key as root of right-left
                 root.right.left = splay(root.right.left, name);
 
@@ -202,14 +210,145 @@ class SplayTree{
         }
     }
 
+   public static void deleteTree(node deletenode){
+        if(deletenode==null)
+            return;
+        deleteTree(deletenode.left);
+        deleteTree(deletenode.right);
+        //System.out.println("The deleted node is " + deletenode.name);
+        deletenode = null;
+    }
 
 
-    /* Driver code*/
+    public static void main(String[] args) {
+
+        // 1 - VSTUP 50
+        // 2 - VSTUP 20 000
+        // 3 - VSTUP 100 000
+
+        r1_testovac(1);
+        r1_testovac(2);
+        r1_testovac(3);
+
+
+    }
+
+    public static node vkladanieStromu(String path){
+        String line = "";
+        int counter = 0;
+        node prvyNode = null;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
+
+            while ((line = br.readLine()) != null){
+                counter++;
+                String[] values = line.split(",");
+                //System.out.println("Name " + values[0] + " age " + values[1] );
+
+                prvyNode=insert(prvyNode,Integer.parseInt(values[1]),values[0]);
+
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return prvyNode;
+    }
+
+    public static void r1_testovac(int velkostVstupu){
+
+        long start = System.currentTimeMillis();
+        node prvyNode = null;
+        int pocetNajdeni;
+        String key = null;
+        String path = null;
+        if(velkostVstupu == 3) {
+            System.out.println("-------------------------\n--> VSTUP | 100 000 | <--");
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
+
+        } else if(velkostVstupu == 2){
+            System.out.println("-------------------------\n--> VSTUP | 20 000 | <--");
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup20k.csv";
+
+        }else if (velkostVstupu == 1){
+            System.out.println("-------------------------\n--> VSTUP | 50 | <--");
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup50.csv";
+        }
+
+        prvyNode=vkladanieStromu(path);
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("Time of inserting " + timeElapsed + "ms...");
+
+
+
+        long startSearch = System.currentTimeMillis();
+        pocetNajdeni=vyhladavanieVStrome(prvyNode,path);
+        long finishSearch = System.currentTimeMillis();
+        long timeElapsedSearch = finishSearch - startSearch;
+        System.out.println("Time of searching " + timeElapsedSearch + "ms...");
+        System.out.println("Tree height: "+ maxDepth(prvyNode));
+        System.out.println("Number inserted nodes: " +SplayTree.pocetVstupov );
+        System.out.println("Number searched nodes: " + pocetNajdeni );
+        SplayTree.pocetVstupov = 0;
+        deleteTree(prvyNode);
+    }
+
+    public static int vyhladavanieVStrome(node node,String path){
+        int pocetNajdeni=0;
+        String line = "";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
+
+            while ((line = br.readLine()) != null){
+                String[] values = line.split(",");
+                //System.out.println("Name " + values[0] + " age " + values[1] );
+                if(search(node,values[0]) != null){
+                   pocetNajdeni++;
+                }
+
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return pocetNajdeni;
+    }
+
+    static int maxDepth(node root)
+    {
+        if (root == null)
+            return 0;
+        else
+        {
+            //System.out.println("Pocitanie " + root.left.name);
+            /* compute the depth of each subtree */
+            int lDepth = maxDepth(root.left);
+            int rDepth = maxDepth(root.right);
+
+
+            /* use the larger one */
+            if (lDepth > rDepth)
+                return (lDepth + 1);
+            else
+                return (rDepth + 1);
+        }
+    }
+
+
+
+
+    /* Driver code
     public static void main(String[] args)
     {
-        node root = newNode(12,"Zuzana Blbá");
+        node root = null;
 
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/ExportCSV.csv";
+        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup50.csv";
 
         String line = "";
         try {
@@ -240,17 +379,22 @@ class SplayTree{
             return 0;
         else
         {
-            /* compute the depth of each subtree */
+
             int lDepth = maxDepth(node.left);
             int rDepth = maxDepth(node.right);
 
-            /* use the larger one */
+
             if (lDepth > rDepth)
                 return (lDepth + 1);
             else
                 return (rDepth + 1);
         }
     }
+
+     */
+
+
+
 }
 
 

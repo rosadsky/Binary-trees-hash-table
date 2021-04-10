@@ -252,7 +252,7 @@ class GFG {
 
     public static void vkladanieDoTabulky(HashTable table){
         String line = "";
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
+        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup20k.csv";
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
 
@@ -273,7 +273,7 @@ class GFG {
 
     public static void vyhadavanieVTabulke(HashTable table){
         String line = "";
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
+        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup20k.csv";
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
 

@@ -3,9 +3,11 @@ package dsa.zadanie.BinaryTree;
 class BinaryTree {
 
     Node root;
-
+    int pocetVstupov = 0;
+    int pocetNajdeni = 0;
     public BinaryTree() {
-        System.out.println("Vytvaram strom");
+
+
     }
 
     Node insert(Node node, int vek,String key) {
@@ -16,6 +18,7 @@ class BinaryTree {
         if (node == null) {
             //node.balance = height(node.right) - height(node.left);
             //System.out.println(height(node.right) - height(node.left));
+            pocetVstupov++;
             return new Node(vek,key);
         }
         // System.out.println(s3.compareTo(s1));//-1(because s3 < s1 )
@@ -29,6 +32,10 @@ class BinaryTree {
         if( key.compareTo(node.name) > 0){
            // System.out.println("pravo " + key + ">" + node.name );
             node.right = insert(node.right,vek,key);
+        }
+
+        if( key.compareTo(node.name) == 0){
+            pocetVstupov++;
         }
 
         node.height = Math.max(sumHeight(node.left), sumHeight(node.right)) + 1;
@@ -98,7 +105,8 @@ class BinaryTree {
         if (vysledok== null){
             System.out.println("Nenašiel som " + key + "...");
         } else  {
-            System.out.println("NAŠIEL KEY: " + vysledok.name + " | VEK : " + vysledok.vek + " | VÝŠKA " + vysledok.height );
+            pocetNajdeni++;
+            //System.out.println("NAŠIEL KEY: " + vysledok.name + " | VEK : " + vysledok.vek + " | VÝŠKA " + vysledok.height );
         }
 
     }

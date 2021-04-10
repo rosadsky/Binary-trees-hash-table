@@ -3,88 +3,20 @@ import java.io.*;
 
 
 
-
-
 class Main{
 
 
     public static void main(String[] args) {
 
+        // 1 - VSTUP 50
+        // 2 - VSTUP 20 000
+        // 3 - VSTUP 100 000
 
-        //test_0();
-        //test_1();
-         test_2();
-
-
-
-    }
-
-
-    public static void test_0(){
-
-        System.out.println("------------------------\n--> VSTUP | 50 | <--");
-        long start = System.currentTimeMillis();
-        BinaryTree strom = new BinaryTree();
-        String key = null;
-
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/ExportCSV.csv";
-        vkladanieStromu(path,strom);
+         r1_testovac(1);
+         r1_testovac(2);
+         r1_testovac(3);
 
 
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-
-        System.out.println("Time " + timeElapsed + "ms...");
-
-        strom.searchKey(strom.root,"Gil Mcnally");
-        strom.searchKey(strom.root,"Henry Robe");
-        strom.searchKey(strom.root,"Roman Osadsky");
-
-        //strom.preOrder(strom.root);
-        System.out.println("vyska stromu " + maxDepth(strom.root));
-
-    }
-
-    public static void test_1(){
-
-        System.out.println("------------------------\n--> VSTUP | 20 000 | <--");
-        long start = System.currentTimeMillis();
-        BinaryTree strom = new BinaryTree();
-        String key = null;
-
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/ExportCSV-2.csv";
-        vkladanieStromu(path,strom);
-
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-
-        System.out.println("Time " + timeElapsed + "ms...");
-
-        strom.searchKey(strom.root,"Gil Mcnally");
-        strom.searchKey(strom.root,"Jacob Gibbons");
-
-
-    }
-
-    public static void test_2(){
-
-        System.out.println("------------------------\n--> VSTUP | 100 000 | <--");
-        long start = System.currentTimeMillis();
-        BinaryTree strom = new BinaryTree();
-        String key = null;
-
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
-        vkladanieStromu(path,strom);
-
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-
-        System.out.println("Time of inserting " + timeElapsed + "ms...");
-        long startSearch = System.currentTimeMillis();
-       vyhladavanieVStrome(strom);
-        long finishSearch = System.currentTimeMillis();
-        long timeElapsedSearch = finish - start;
-        System.out.println("Time of searching " + timeElapsed + "ms...");
     }
 
     public static void vkladanieStromu(String path,BinaryTree strom){
@@ -104,12 +36,46 @@ class Main{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    public static void vyhladavanieVStrome(BinaryTree strom){
+    public static void r1_testovac(int velkostVstupu){
+
+        long start = System.currentTimeMillis();
+        BinaryTree strom = new BinaryTree();
+        String key = null;
+        String path = null;
+        if(velkostVstupu == 3) {
+            System.out.println("-------------------------\n--> VSTUP | 100 000 | <--");
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
+
+        } else if(velkostVstupu == 2){
+            System.out.println("-------------------------\n--> VSTUP | 20 000 | <--");
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup20k.csv";
+
+        }else if (velkostVstupu == 1){
+            System.out.println("-------------------------\n--> VSTUP | 50 | <--");
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup50.csv";
+        }
+
+        vkladanieStromu(path, strom);
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("Time of inserting " + timeElapsed + "ms...");
+
+
+
+        long startSearch = System.currentTimeMillis();
+        vyhladavanieVStrome(strom,path);
+        long finishSearch = System.currentTimeMillis();
+        long timeElapsedSearch = finishSearch - startSearch;
+        System.out.println("Time of searching " + timeElapsedSearch + "ms...");
+        System.out.println("Tree height: "+maxDepth(strom.root));
+        System.out.println("Number inserted nodes: " + strom.pocetVstupov);
+        System.out.println("Number searched nodes: " + strom.pocetNajdeni);
+    }
+
+    public static void vyhladavanieVStrome(BinaryTree strom,String path){
         String line = "";
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/SearchKeys.csv";
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
 

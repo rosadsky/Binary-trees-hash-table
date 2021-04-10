@@ -15,7 +15,6 @@ public class Main {
 
 
         HashTable table = new HashTable();
-
         vkladanieDoTabulky(table);
         System.out.println("---VYPIS---");
         vyhadavanieVTabulke(table);
@@ -46,6 +45,16 @@ public class Main {
         }
 
 */
+
+    public static void r1_testovac(int vstup){
+
+        HashTable table = new HashTable();
+        vkladanieDoTabulky(table);
+        System.out.println("---VYPIS---");
+        vyhadavanieVTabulke(table);
+        table.vypisHashTable();
+    }
+
 
     public static void vkladanieDoTabulky(HashTable table){
         String line = "";

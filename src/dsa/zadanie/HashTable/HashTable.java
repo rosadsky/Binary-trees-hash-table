@@ -38,9 +38,9 @@ public class HashTable {
             biggerArrayList(dlzkaPola);
         }
 
-        System.out.println("1. HASH CALC " + hash(name) + " % " + dlzkaPola);
+        //System.out.println("1. HASH CALC " + hash(name) + " % " + dlzkaPola);
         hash = (hash(name) % dlzkaPola);
-        System.out.println("2. HASH NA INSERT [" + hash + "] na insert " + name);
+        //System.out.println("2. HASH NA INSERT [" + hash + "] na insert " + name);
 
         if (array[hash].isEmpty()) {
 
@@ -52,13 +52,13 @@ public class HashTable {
 
 
         // array[hash].add(new Node(name,vek));
-        System.out.println("3. " + array[hash].get(0).name + " " + array[hash].get(0).vek + " HASH: " + hash);
+       // System.out.println("3. " + array[hash].get(0).name + " " + array[hash].get(0).vek + " HASH: " + hash);
 
     }
 
     public void biggerArrayList(int size) {
         zvacsenia++;
-        System.out.println("NEW SIZE ARRAY: " + size + " + " + size);
+        //System.out.println("NEW SIZE ARRAY: " + size + " + " + size);
         int sizeNew = size * 2;
 
         //OPAKOVANIA: 47712 DLZKA 106710 NEOBSADENE 54430 COUNTER 15
@@ -68,7 +68,7 @@ public class HashTable {
         ArrayList<Node>[] arrayNew = new ArrayList[size];
 
         System.arraycopy(array, 0, arrayNew, 0, size);
-        System.out.println(Arrays.toString(arrayNew));
+        //System.out.println(Arrays.toString(arrayNew));
         array = new ArrayList[sizeNew];
         System.arraycopy(arrayNew, 0, array, 0, size);
 
@@ -77,7 +77,7 @@ public class HashTable {
 
         firstArray(dlzkaPola);
 
-        System.out.println(Arrays.toString(array));
+        //System.out.println(Arrays.toString(array));
     }
 
     public int hash(String name) {
@@ -108,7 +108,7 @@ public class HashTable {
             }
             for (int j = 0; j < size; j++) {
                 if (array[i].get(j) != null) {
-                    System.out.print(array[i].get(j).name + " ");
+                    //System.out.print(array[i].get(j).name + " ");
                     if (j > counter) {
                         counter++;
 
@@ -119,9 +119,9 @@ public class HashTable {
             if (array[i].isEmpty()) {
                 neobsadene++;
             }
-            System.out.println("X");
+            //System.out.println("X");
         }
-        System.out.println("OPAKOVANIA: " + opakovania + " DLZKA " + dlzkaPola + " NEOBSADENE " + neobsadene + " COUNTER " + counter + "NAJDENIA " + najdenia);
+        System.out.println("Duplicates in chains: " + opakovania + "\nLenght of array: " + dlzkaPola + "\nFree array indexes: " + neobsadene + "\nLonges chain: " + counter + "\nSearched nodes: " + najdenia);
     }
 
     public Node searchNode(String name, int vek) {
