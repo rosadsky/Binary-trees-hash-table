@@ -1,12 +1,8 @@
-package dsa.zadanie.A;
+package dsa.zadanie.BinaryTree;
 import java.io.*;
 
-import dsa.*;
-
-import dsa.zadanie.*;
 
 
-import static dsa.zadanie.A.BinaryTree.preOrder;
 
 
 class Main{
@@ -15,9 +11,9 @@ class Main{
     public static void main(String[] args) {
 
 
-        test_0();
+        //test_0();
         //test_1();
-       // test_2();
+         test_2();
 
 
 
@@ -44,7 +40,7 @@ class Main{
         strom.searchKey(strom.root,"Henry Robe");
         strom.searchKey(strom.root,"Roman Osadsky");
 
-        preOrder(strom.root);
+        //strom.preOrder(strom.root);
         System.out.println("vyska stromu " + maxDepth(strom.root));
 
     }

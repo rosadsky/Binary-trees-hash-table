@@ -13,12 +13,12 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //System.out.println(279%11);
 
         HashTable table = new HashTable();
 
         vkladanieDoTabulky(table);
         System.out.println("---VYPIS---");
+        vyhadavanieVTabulke(table);
         table.vypisHashTable();
     }
 
@@ -66,6 +66,27 @@ public class Main {
             e.printStackTrace();
         }
 
+    }
+
+    public static void vyhadavanieVTabulke(HashTable table){
+        String line = "";
+        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
+
+            while ((line = br.readLine()) != null){
+                String[] values = line.split(",");
+                //System.out.println("Name " + values[0] + " age " + values[1] );
+                table.searchNode(values[0], Integer.parseInt(values[1]));
+
+
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

@@ -1,4 +1,4 @@
-package dsa.zadanie.A;
+package dsa.zadanie.BinaryTree;
 
 class Node
 {

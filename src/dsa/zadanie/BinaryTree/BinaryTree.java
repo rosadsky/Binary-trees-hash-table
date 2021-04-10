@@ -1,9 +1,4 @@
-package dsa.zadanie.A;
-
-import dsa.zadanie.*;
-
-
-import javax.swing.plaf.synth.SynthTextAreaUI;
+package dsa.zadanie.BinaryTree;
 
 class BinaryTree {
 
@@ -233,7 +228,7 @@ class BinaryTree {
         }
 
     }
-    static void preOrder(Node node)
+    public static void preOrder(Node node)
     {
         if (node != null)
         {
