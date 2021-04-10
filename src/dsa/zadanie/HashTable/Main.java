@@ -13,12 +13,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-
-        HashTable table = new HashTable();
-        vkladanieDoTabulky(table);
-        System.out.println("---VYPIS---");
-        vyhadavanieVTabulke(table);
-        table.vypisHashTable();
+        r1_testovac(1);
+        r1_testovac(2);
+        r1_testovac(3);
     }
 
 /*
@@ -46,19 +43,37 @@ public class Main {
 
 */
 
-    public static void r1_testovac(int vstup){
+    public static void r1_testovac(int velkostVstupu){
+        String path = null;
 
+        if(velkostVstupu == 3) {
+            System.out.println("-------------------------\n--> VSTUP | 100 000 | <--");
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
+
+        } else if(velkostVstupu == 2){
+            System.out.println("-------------------------\n--> VSTUP | 20 000 | <--");
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup20k.csv";
+
+        }else if (velkostVstupu == 1){
+            System.out.println("-------------------------\n--> VSTUP | 50 | <--");
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup50.csv";
+        }
+        long start = System.currentTimeMillis();
         HashTable table = new HashTable();
-        vkladanieDoTabulky(table);
-        System.out.println("---VYPIS---");
-        vyhadavanieVTabulke(table);
+        vkladanieDoTabulky(table,path);
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("Time of inserting " + timeElapsed + "ms...");
+        long startSearch = System.currentTimeMillis();
+        vyhadavanieVTabulke(table,path);
+        long finishSearch = System.currentTimeMillis();
+        long timeElapsedSearch = finishSearch - startSearch;
+        System.out.println("Time of searching " + timeElapsedSearch + "ms...");
         table.vypisHashTable();
     }
 
-
-    public static void vkladanieDoTabulky(HashTable table){
+    public static void vkladanieDoTabulky(HashTable table,String path){
         String line = "";
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
 
@@ -77,9 +92,8 @@ public class Main {
 
     }
 
-    public static void vyhadavanieVTabulke(HashTable table){
+    public static void vyhadavanieVTabulke(HashTable table, String path){
         String line = "";
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
 

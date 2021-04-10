@@ -42,8 +42,7 @@ class HashTable {
 
     // Constructor of this class
     // Parametrized constructor
-    public HashTable(int ts)
-    {
+    public HashTable(int ts) {
         // Initializing the member variables
         size = 0;
         HASH_TABLE_SIZE = ts;
@@ -57,8 +56,7 @@ class HashTable {
 
     // Method 1
     // To check for the prime number
-    public int getPrime()
-    {
+    public int getPrime() {
         // Iterating using for loop in reverse order
         for (int i = HASH_TABLE_SIZE - 1; i >= 1; i--) {
 
@@ -94,23 +92,27 @@ class HashTable {
 
     // Method 2
     // To get number of key-value pairs
-    public int getSize() { return size; }
-    public boolean isEmpty() { return size == 0; }
+    public int getSize() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
 
     //
     /* Function to clear hash table */
-    public void makeEmpty()
-    {
+    public void makeEmpty() {
         size = 0;
         for (int i = 0; i < HASH_TABLE_SIZE; i++)
             table[i] = null;
     }
 
-    int pocetNajdeni;
+    public int pocetNajdeni;
+
     // Method 3
     // To get value of a key
-    public int getkey(String key)
-    {
+    public int getkey(String key) {
         int hash1 = myhash1(key);
         int hash2 = myhash2(key);
 
@@ -124,13 +126,13 @@ class HashTable {
         return table[hash1].vek;
     }
 
-    int pocetVlozeni=0;
+    public int pocetVlozeni = 0;
+
     // Method 4
     // To insert a key value pair
-    public void insert(String key, int value)
-    {
+    public void insert(String key, int value) {
 
-        System.out.println("VKLADAM " + key);
+        //System.out.println("VKLADAM " + key);
         // checking the size of table and
         // comparing it with users input value
         if (size == HASH_TABLE_SIZE) {
@@ -154,8 +156,7 @@ class HashTable {
 
     // Method 5
     // To remove a key
-    public void remove(String key)
-    {
+    public void remove(String key) {
         int hash1 = myhash1(key);
         int hash2 = myhash2(key);
         while (table[hash1] != null
@@ -170,8 +171,7 @@ class HashTable {
     // Method 6
     // Function gives a hash value for a given
     // string basically it is linear probing
-    private int myhash1(String y)
-    {
+    private int myhash1(String y) {
         int myhashVal1 = y.hashCode();
         myhashVal1 %= HASH_TABLE_SIZE;
         if (myhashVal1 < 0)
@@ -186,8 +186,7 @@ class HashTable {
     // Now after linear probing, quadratic probing
     // is used in which two myhash functions are used
     // as it is double chaining
-    private int myhash2(String y)
-    {
+    private int myhash2(String y) {
         int myhashVal2 = y.hashCode();
         myhashVal2 %= HASH_TABLE_SIZE;
         if (myhashVal2 < 0)
@@ -197,62 +196,77 @@ class HashTable {
 
     // Method 8
     // To print the hash table
-    public void printHashTable()
-    {
+    public int zistitPocetVolnych() {
         // Display message
-        System.out.println("\nHash Table");
-
-        for (int i = 0; i < HASH_TABLE_SIZE; i++)
-            if (table[i] != null)
-                System.out.println(table[i].name + " "
-                        + table[i].vek);
+        //System.out.println("\nHash Table");
+        int pocetVolnych = 0;
+        for (int i = 0; i < HASH_TABLE_SIZE; i++) {
+            if (table[i] == null) {
+                pocetVolnych++;
+            }
+        }
+        return pocetVolnych;
     }
+
 }
 
 // Class 3
 // Main class
 // Class for DoubleHashingHashTableTest
-class GFG {
+class HashTableMain {
 
     // Main driver method
     public static void main(String[] args)
     {
-        // Display message
-        System.out.println("Hash Table Testing");
 
-        // Creating an object of HashTable
-        // in the main() method
-        // Custom hashtable of size 100
-        // means 100 key-value pairs the
-        // above hashtable can hold
-        HashTable ht = new HashTable(155000);
+        r1_testovac(1);
+        r1_testovac(2);
+        r1_testovac(3);
 
-        // Inserting custom values to the hashtable
-        // that is key and value pairs
-        // Custom inputs
-        //ht.insert("Jozef Pidík", 12);
-        //ht.insert("Peter Gerco", 13);
-        //ht.insert("Roman Osadsky", 14);
-
-        vkladanieDoTabulky(ht);
-        vyhadavanieVTabulke(ht);
-        System.out.println(ht.pocetVlozeni +"   " +   ht.pocetNajdeni);
-        // Printing hash table after insertion of
-        // key value pairs and calling function
-        // which prints out the hashtable.
-        //
-        // Calling the function as usual
-        // with the help of objects
-
-        //ht.getkey("Roman Osadsky");
-        //System.out.println( ht.getkey("Roman Osadsky"));
-
-        //ht.printHashTable();
     }
 
-    public static void vkladanieDoTabulky(HashTable table){
+
+    public static void r1_testovac(int velkostVstupu){
+        String path = null;
+        int velkostPola = 100000;
+
+        if(velkostVstupu == 3) {
+            System.out.println("-------------------------\n--> VSTUP | 100 000 | <--");
+            velkostPola = 160000;
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
+
+        } else if(velkostVstupu == 2){
+            velkostPola = 30000;
+            System.out.println("-------------------------\n--> VSTUP | 20 000 | <--");
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup20k.csv";
+
+        }else if (velkostVstupu == 1){
+            velkostPola = 75;
+            System.out.println("-------------------------\n--> VSTUP | 50 | <--");
+            path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup50.csv";
+        }
+
+
+        long start = System.currentTimeMillis();
+        HashTable table = new HashTable(velkostPola);
+        vkladanieDoTabulky(table,path);
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("Time of inserting " + timeElapsed + "ms...");
+        long startSearch = System.currentTimeMillis();
+        vyhadavanieVTabulke(table,path);
+        long finishSearch = System.currentTimeMillis();
+        long timeElapsedSearch = finishSearch - startSearch;
+        System.out.println("Time of searching " + timeElapsedSearch + "ms...");
+        System.out.println(
+                "Inserted nodes:"+ table.pocetVlozeni +
+                "\nLenght of array: " + velkostPola +
+                "\nFree array indexes: " + table.zistitPocetVolnych() +
+                "\nSearched nodes: " + table.pocetNajdeni);
+    }
+
+    public static void vkladanieDoTabulky(HashTable table, String path){
         String line = "";
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup20k.csv";
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
 
@@ -271,9 +285,8 @@ class GFG {
 
     }
 
-    public static void vyhadavanieVTabulke(HashTable table){
+    public static void vyhadavanieVTabulke(HashTable table, String path){
         String line = "";
-        String path =  "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup20k.csv";
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
 
@@ -292,5 +305,6 @@ class GFG {
         }
 
     }
+
 }
 
