@@ -42,6 +42,7 @@ class Main{
 
         long start = System.currentTimeMillis();
         BinaryTree strom = new BinaryTree();
+        Node najdenynode = null;
         String key = null;
         String path = null;
         if(velkostVstupu == 3) {
@@ -72,6 +73,39 @@ class Main{
         System.out.println("Tree height: "+maxDepth(strom.root));
         System.out.println("Number inserted nodes: " + strom.pocetVstupov);
         System.out.println("Number searched nodes: " + strom.pocetNajdeni);
+        long startSingle = System.currentTimeMillis();
+        if(velkostVstupu == 3) {
+            //Evie Villiger,73
+            System.out.println("Searching for: Evie Villiger,73" );
+            najdenynode=strom.searchKey(strom.root,"Evie Villiger",73);
+            System.out.println("Loaded node: "+ najdenynode.name +
+                    " age " +  najdenynode.vek +
+                    "\nbalance " + najdenynode.balance +
+                    " height of node " + najdenynode.height);
+
+
+        } else if(velkostVstupu == 2){
+            System.out.println("Searching for: Alan Parker,86" );
+            najdenynode=strom.searchKey(strom.root,"Alan Parker",86);
+            System.out.println("SLoaded node: "+ najdenynode.name +
+                    " age " +  najdenynode.vek +
+                    "\nbalance " + najdenynode.balance +
+                    " height of node " + najdenynode.height);
+
+        }else if (velkostVstupu == 1){
+            System.out.println("Searching for: Sonya Jenkin, 63 " );
+            najdenynode=strom.searchKey(strom.root,"Sonya Jenkin",64);
+            System.out.println("Loaded node: "+ najdenynode.name +
+                    " age " +  najdenynode.vek +
+                    "\nbalance " + najdenynode.balance +
+                    " height of node " + najdenynode.height);
+        }
+
+        long finishSingle = System.currentTimeMillis();
+        long timeElapsedSingle = finishSingle - startSingle;
+        System.out.println("search time 1 node " + timeElapsedSingle + "ms...");
+
+
     }
 
     public static void vyhladavanieVStrome(BinaryTree strom,String path){
@@ -82,7 +116,7 @@ class Main{
             while ((line = br.readLine()) != null){
                 String[] values = line.split(",");
                 //System.out.println("Name " + values[0] + " age " + values[1] );
-                strom.searchKey(strom.root,values[0]);
+                strom.searchKey(strom.root,values[0],Integer.parseInt(values[1]));
 
             }
 

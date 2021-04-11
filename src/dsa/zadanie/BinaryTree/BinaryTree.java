@@ -7,7 +7,6 @@ class BinaryTree {
     int pocetNajdeni = 0;
     public BinaryTree() {
 
-
     }
 
     Node insert(Node node, int vek,String key) {
@@ -15,14 +14,17 @@ class BinaryTree {
         //System.out.println("VKLADAM: (" + key + ")");
         int balance;
 
-        if (node == null) {
-            //node.balance = height(node.right) - height(node.left);
-            //System.out.println(height(node.right) - height(node.left));
+        if (node == null) {  // najdeme prázdny node -> vytvoríme nový node v strome
             pocetVstupov++;
             return new Node(vek,key);
         }
-        // System.out.println(s3.compareTo(s1));//-1(because s3 < s1 )
-        // vek.compareTo(node.getValue())<0
+
+        /*
+            rekurzívna podmienka kde postupne porovnávame hodnotu ktoru chceme vložiť
+            s hodnotami, ktoré už v strome sú a podla toho sa postupne dostávame
+            v strome nižšie a nižšie  až natrafíme na volný node a tam hodnotu zapíšeme
+         */
+
         if (key.compareTo(node.name) < 0){
            // System.out.println("vlavo " + key + "<" + node.name );
             node.left= insert(node.left,vek,key);
@@ -34,24 +36,17 @@ class BinaryTree {
             node.right = insert(node.right,vek,key);
         }
 
+        //ak sa nachádza dané meno v už v strome tak si zapíšem počet vstupov, ktoré som načítal
         if( key.compareTo(node.name) == 0){
             pocetVstupov++;
         }
 
-        node.height = Math.max(sumHeight(node.left), sumHeight(node.right)) + 1;
-        balance = getBalance(node);
+        node.height = Math.max(sumHeight(node.left), sumHeight(node.right)) + 1; //počítam si priebežne výšku každého node
+        balance = getBalance(node);  // počítam si balance daného nodu, vďaka čomu môžem neskor zistiť či ho treba rotovať
+
        // System.out.println("["+ node.name +"] h - > " + node.height + " b -> " + balance);
 
-
-        //if s1 > s2, it returns positive number
-        //if s1 < s2, it returns negative number
-
-        //System.out.println(s3.compareTo(s1));//-1(because s3 < s1 )
-        // vek < node.left.value
-
-
-
-
+        // ak chcem strom rotovať doprava
         if (balance > 1 ){
             if (( key.compareTo(node.left.name) < 0)){
                 //System.out.println("-> Right Rotate");
@@ -60,9 +55,7 @@ class BinaryTree {
 
         }
 
-
-        //System.out.println(s1.compareTo(s3));//1(because s1>s3)
-        //vek > node.right.value
+        // ak chcem strom rotovať dolava
         if (balance < -1){
             if ((key.compareTo(node.right.name) > 0)){
               //  System.out.println("-> Left Rotate");
@@ -71,12 +64,7 @@ class BinaryTree {
         }
 
 
-        // Left Right Case
-        //if (balance > 1 && value > node.left.value)
-
-        //((s1<s2) < 0)
-        //((s1>s2) > 0)
-
+        // ak chcem strom rotovať dolava a potom ešte doprava
         if (balance > 1) {
             if ((key.compareTo(node.left.name) > 0)){
                // System.out.println("-> Left Right Rotate");
@@ -84,8 +72,7 @@ class BinaryTree {
             }
 
         }
-
-        //if (balance < -1 && value < node.right.value)
+        // ak chcem strom rotovať doprava a potom ešte dolava
         if (balance < -1) {
             if ( key.compareTo(node.right.name) < 0) {
                // System.out.println("-> Right Left Rotate");
@@ -98,9 +85,9 @@ class BinaryTree {
         return node;
     }
 
-    public void searchKey(Node node, String key){
+    public Node searchKey(Node node, String key, int vek){
 
-        Node vysledok = search(node,key);
+        Node vysledok = search(node,key,vek);
 
         if (vysledok== null){
             System.out.println("Nenašiel som " + key + "...");
@@ -109,30 +96,32 @@ class BinaryTree {
             //System.out.println("NAŠIEL KEY: " + vysledok.name + " | VEK : " + vysledok.vek + " | VÝŠKA " + vysledok.height );
         }
 
+        return vysledok;
     }
 
-    Node search(Node node, String key){
+    Node search(Node node, String key, int vek){
+       /*
+       Search funkcia má rovnaký postup prechádzania v strome ako ked ich vkladám
+       to znamená že rekruzívne porovnávam dané nody až dokým nenájdem hladaný kľúč
+        */
+
+
         if (node == null) {
             return null;
         }
 
-        if (key.compareTo(node.name) == 0){
+        if (key.compareTo(node.name) == 0 && vek == node.vek){
             return node;
         }
 
-        // System.out.println(s3.compareTo(s1));//-1(because s3 < s1 )
-        // vek.compareTo(node.getValue())<0
         if (key.compareTo(node.name) < 0){
             // System.out.println("LEFT - [ " + key+  " ] < [" + node.name + "]");
-            node = search(node.left,key);
+            node = search(node.left,key,vek);
 
         } else if (key.compareTo(node.name)>0)  {
             //System.out.println("RIGHT- [ " + key+  " ] > [" + node.name + "]");
-            node = search(node.right,key);
+            node = search(node.right,key,vek);
         }
-        // System.out.println(s1.compareTo(s2))
-
-        //System.out.println("94r ->> "+ node.name );
 
         return node;
 
@@ -140,11 +129,16 @@ class BinaryTree {
 
     Node leftRightRotate(Node node){
 
+         /*
+        Otáčanie dolava/doprava - som znázornil na obrázku v mojej dokumentácií
+            - keď a dané nody zrotuju tak im prepočítam výšku aj balanca a zapíšem ju do nich
+         */
+
         //System.out.println("LEFT-RIGHT");
 
         node.left = leftRotate(node.left);
 
-        Node rotationNode = node.left; //<-----
+        Node rotationNode = node.left;
         node.left = rotationNode.right;
         rotationNode.right = node;
 
@@ -158,8 +152,12 @@ class BinaryTree {
     }
 
     Node rightLeftRotate(Node node){
-        //System.out.println("RIGHT-LEFT [" + node.name + "]");
+         /*
+        Otáčanie doprava/dolava - som znázornil na obrázku v mojej dokumentácií
+            - keď a dané nody zrotuju tak im prepočítam výšku aj balanca a zapíšem ju do nich
+         */
 
+        //System.out.println("RIGHT-LEFT [" + node.name + "]");
         node.right = rightRotate(node.right);
 
         Node rotationNode = node.right;
@@ -172,13 +170,16 @@ class BinaryTree {
         node.height = Math.max(sumHeight(node.left), sumHeight(node.right)) + 1;
         rotationNode.height = Math.max(sumHeight(rotationNode.left), sumHeight(rotationNode.right)) + 1;
 
-
-
         return rotationNode;
 
     }
 
     Node rightRotate(Node node){
+        /*
+        Otáčanie doprava - som znázornil na obrázku v mojej dokumentácií
+            - keď a dané nody zrotuju tak im prepočítam výšku aj balanca a zapíšem ju do nich
+         */
+
        // System.out.println("RIGHT");
         Node rotationNode = node.left;
         node.left = rotationNode.right;
@@ -189,13 +190,20 @@ class BinaryTree {
 
         node.balance = getBalance(node);
         rotationNode.balance = getBalance(rotationNode);
-        //System.out.println("ZROTOVAL SOM HAHAHA");
+
         return rotationNode;
     }
 
     Node leftRotate(Node node){
 
+         /*
+        Otáčanie dolava - som znázornil na obrázku v mojej dokumentácií
+            - keď a dané nody zrotuju tak im prepočítam výšku aj balanca a zapíšem ju do nich
+         */
+
+
         //System.out.println("LEFT");
+
         Node rotationNode = node.right;
         node.right = rotationNode.left;
         rotationNode.left = node;
@@ -211,6 +219,8 @@ class BinaryTree {
 
     }
 
+
+    //vypocet výšky daného nodu ak node je prázdny vráti sa -1 a ak nieje tak v nom je zapísaná výška a tá sa vráti
     public int sumHeight(Node node) {
         if (node == null) {
             return -1;
@@ -218,7 +228,7 @@ class BinaryTree {
             return node.height;
         }
     }
-
+    // výpočet balancu sa počíta tak že odpočítam výšku pravého nodu od ľavého
     private int getBalance(Node node) {
         int balance;
         int left;
@@ -231,20 +241,11 @@ class BinaryTree {
 
             balance = left - right;
            // System.out.println("getBalance NODE: [" + node.getName() + "] ");
-           // System.out.println(sumHeight(node.left) +" - " + sumHeight(node.right) );
             return balance;
         }
 
     }
-    public static void preOrder(Node node)
-    {
-        if (node != null)
-        {
-            System.out.print(node.name+" \n");
-            preOrder(node.left);
-            preOrder(node.right);
-        }
-    }
+
 
     public Node getRoot() {
         return root;
