@@ -45,7 +45,7 @@ public class Main {
 
     public static void r1_testovac(int velkostVstupu){
         String path = null;
-
+        Node najdenynode= null;
         if(velkostVstupu == 3) {
             System.out.println("-------------------------\n--> VSTUP | 100 000 | <--");
             path = "/Users/romanosadsky/Documents/LS 2021/OOP/DSA-ZADANIE-2/src/dsa/zadanie/csv/Vstup100k.csv";
@@ -70,6 +70,38 @@ public class Main {
         long timeElapsedSearch = finishSearch - startSearch;
         System.out.println("Time of searching " + timeElapsedSearch + "ms...");
         table.vypisHashTable();
+        long startSingle = System.currentTimeMillis();
+        if(velkostVstupu == 3) {
+            //Evie Villiger,73
+            System.out.println("Searching for: Evie Villiger,73" );
+            najdenynode=table.searchNode("Evie Villiger",73);
+            System.out.println("Loaded node: "+ najdenynode.name +
+                    " age " +  najdenynode.vek);// +
+                    //"\nbalance " + najdenynode.balance +
+                    //" height of node " + najdenynode.height);
+
+
+        } else if(velkostVstupu == 2){
+            System.out.println("Searching for: Alan Parker,86" );
+            najdenynode=table.searchNode("Alan Parker",86);
+            System.out.println("SLoaded node: "+ najdenynode.name +
+                    " age " +  najdenynode.vek );// +
+            //"\nbalance " + najdenynode.balance +
+            //" height of node " + najdenynode.height);
+
+        }else if (velkostVstupu == 1){
+            System.out.println("Searching for: Sonya Jenkin, 63 " );
+            najdenynode=table.searchNode("Sonya Jenkin",63);
+            System.out.println("Loaded node: "+ najdenynode.name +
+                    " age " +  najdenynode.vek );// +
+            //"\nbalance " + najdenynode.balance +
+            //" height of node " + najdenynode.height);
+        }
+
+        long finishSingle = System.currentTimeMillis();
+        long timeElapsedSingle = finishSingle - startSingle;
+        System.out.println("search time 1 node " + timeElapsedSingle + "ms...");
+
     }
 
     public static void vkladanieDoTabulky(HashTable table,String path){

@@ -13,6 +13,7 @@ import java.io.IOException;
 
 class SplayTree{
     static int pocetVstupov = 0;
+    static int pocetNajdeni = 0;
 
     static class node {
         int vek;
@@ -54,9 +55,14 @@ class SplayTree{
     {
 
 
-
-        if (root == null || root.name == name)
+        // ak je prázdna alebo sa už nachádza v strome
+        if (root == null)
             return root;
+
+        if(root.name.compareTo(name)==0){
+            pocetNajdeni++;
+            return root;
+        }
 
 
         // Keď sa klúč nachádza na lavej strane
@@ -151,26 +157,18 @@ class SplayTree{
             root.right = null;
         }
 
+
         return newnode; // nový node sa stane root
     }
 
-    // Iteratívna funkcia hladania nodu v strome
-    static node search(node root, String name)
+    // Najdeny node v našom prípade sa presunie na root
+    static node search(node root, String key)
     {
-        while (root != null) {
-
-
-            if (name.compareTo(root.name) > 0)
-                root = root.right;
-            else if (name.compareTo(root.name) < 0)
-                root = root.left;
-            else
-                return root;
-        }
-        return root;
+        return splay(root, key);
     }
 
-   public static void deleteTree(node deletenode){
+
+    public static void deleteTree(node deletenode){
         if(deletenode==null)
             return;
         deleteTree(deletenode.left);
@@ -246,38 +244,38 @@ class SplayTree{
 
 
         long startSearch = System.currentTimeMillis();
-        pocetNajdeni=vyhladavanieVStrome(prvyNode,path);
+        prvyNode=vyhladavanieVStrome(prvyNode,path);
         long finishSearch = System.currentTimeMillis();
         long timeElapsedSearch = finishSearch - startSearch;
         System.out.println("Time of searching " + timeElapsedSearch + "ms...");
         System.out.println("Tree height: "+ maxDepth(prvyNode));
         System.out.println("Number inserted nodes: " +SplayTree.pocetVstupov );
-        System.out.println("Number searched nodes: " + pocetNajdeni );
-        SplayTree.pocetVstupov = 0;
+        System.out.println("Number searched nodes: " + SplayTree.pocetNajdeni );
+        SplayTree.pocetVstupov = SplayTree.pocetNajdeni = 0;
         long startSingle = System.currentTimeMillis();
         if(velkostVstupu == 3) {
             //Evie Villiger,73
             System.out.println("Searching for: Evie Villiger,73" );
-            najdenynode=search(prvyNode,"Evie Villiger");
-            System.out.println("Loaded node: "+ najdenynode.name +
-                    " age " +  najdenynode.vek); //+
+            prvyNode=search(prvyNode,"Evie Villiger");
+            System.out.println("Loaded node: "+ prvyNode.name +
+                    " age " +  prvyNode.vek); //+
                     //"\nbalance " + najdenynode.balance +
                     //" height of node " + najdenynode.height);
 
 
         } else if(velkostVstupu == 2){
             System.out.println("Searching for: Alan Parker,86" );
-            najdenynode=search(prvyNode,"Alan Parker");
-            System.out.println("Loaded node: "+ najdenynode.name +
-                    " age " +  najdenynode.vek );//+
+            prvyNode=search(prvyNode,"Alan Parker");
+            System.out.println("Loaded node: "+ prvyNode.name +
+                    " age " +  prvyNode.vek );//+
                    // "\nbalance " + najdenynode.balance +
                   //  " height of node " + najdenynode.height);
 
         }else if (velkostVstupu == 1){
             System.out.println("Searching for: Sonya Jenkin, 63 " );
-            najdenynode=search(prvyNode,"Sonya Jenkin");
-            System.out.println("Loaded node: "+ najdenynode.name +
-                    " age " +  najdenynode.vek);// +
+            prvyNode=search(prvyNode,"Sonya Jenkin");
+            System.out.println("Loaded node: "+ prvyNode.name +
+                    " age " +  prvyNode.vek);// +
                   //  "\nbalance " + najdenynode.balance +
                    // " height of node " + najdenynode.height);
         }
@@ -290,7 +288,7 @@ class SplayTree{
         deleteTree(prvyNode);
     }
 
-    public static int vyhladavanieVStrome(node node,String path){
+    public static node vyhladavanieVStrome(node node,String path){
         int pocetNajdeni=0;
         String line = "";
         try {
@@ -299,9 +297,8 @@ class SplayTree{
             while ((line = br.readLine()) != null){
                 String[] values = line.split(",");
                 //System.out.println("Name " + values[0] + " age " + values[1] );
-                if(search(node,values[0]) != null){
-                   pocetNajdeni++;
-                }
+                node = search(node,values[0]);
+
 
             }
 
@@ -311,7 +308,7 @@ class SplayTree{
             e.printStackTrace();
         }
 
-        return pocetNajdeni;
+        return node;
     }
 
     static int maxDepth(node root)

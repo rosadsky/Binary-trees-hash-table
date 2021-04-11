@@ -1,97 +1,62 @@
 package dsa.zadanie.HashTablePrevzata;
 
-// Java Program to implement hashtable in
-// double hashing
-
-// Importing input output classes
+/*
+    https://www.geeksforgeeks.org/java-program-to-implement-hash-tables-with-double-hashing/
+ */
 import java.io.*;
 
-// Class 1
-// Helper Class
-// LinkedHashEntry
 class ValueEntry {
 
-    // Member variables of the class
+
     String name;
     int vek;
 
-    // Constructor of this class
-    // Parametrized constructor
-    ValueEntry(String name, int vek)
-    {
-        // This keyword refers to current object
-        // for assigning values to same object itself
+    ValueEntry(String name, int vek) {
         this.name = name;
-
-        // this operator is pointer which contains location
-        // of that container that have key and value pairs
         this.vek = vek;
     }
 }
 
-// Class 2
-// Helper Class
-// HashTable
+
 class HashTable {
 
-    // Member variable of this class
     private int HASH_TABLE_SIZE;
     private int size;
     private ValueEntry[] table;
     private int totalprimeSize;
 
-    // Constructor of this class
-    // Parametrized constructor
+
     public HashTable(int ts) {
-        // Initializing the member variables
+
         size = 0;
         HASH_TABLE_SIZE = ts;
         table = new ValueEntry[HASH_TABLE_SIZE];
 
-        // Iterating using for loop over table
+
         for (int i = 0; i < HASH_TABLE_SIZE; i++)
             table[i] = null;
+
         totalprimeSize = getPrime();
     }
 
-    // Method 1
-    // To check for the prime number
+    //Metóda na získanie prvočísla
     public int getPrime() {
-        // Iterating using for loop in reverse order
         for (int i = HASH_TABLE_SIZE - 1; i >= 1; i--) {
-
-            // Initially assigning count to zero
             int cnt = 0;
-
-            // Now, iterating from 2 upto the desired number
-            // to be checked by dividing it with all no
-            // in betwenn [2 - no]
             for (int j = 2; j * j <= i; j++)
-
-                // If number is divisible
-                // means not a prime number
                 if (i % j == 0)
-
-                    // So simpy move to next number
-                    // to check for divisibility by
-                    // incrementing the count variable
                     cnt++;
 
-            // By now number is not divisible
-            // hence count holds 0 till last
-            if (cnt == 0)
 
-                // It means it is a prime number so
-                // return the number as it is a prime number
+            if (cnt == 0)
                 return i;
         }
 
-        // Returning a prime number
+        // Vrátenie prvočísla
         return 3;
     }
 
-    // Method 2
-    // To get number of key-value pairs
+
     public int getSize() {
         return size;
     }
@@ -101,7 +66,7 @@ class HashTable {
     }
 
     //
-    /* Function to clear hash table */
+    /* Vymazanie HashTable */
     public void makeEmpty() {
         size = 0;
         for (int i = 0; i < HASH_TABLE_SIZE; i++)
@@ -110,9 +75,8 @@ class HashTable {
 
     public int pocetNajdeni;
 
-    // Method 3
-    // To get value of a key
-    public int getkey(String key) {
+    // nájdenie kľúča
+    public ValueEntry getkey(String key) {
         int hash1 = myhash1(key);
         int hash2 = myhash2(key);
 
@@ -123,27 +87,25 @@ class HashTable {
         }
 
         pocetNajdeni++;
-        return table[hash1].vek;
+
+        return table[hash1];
     }
 
     public int pocetVlozeni = 0;
 
-    // Method 4
-    // To insert a key value pair
+
+    //Vloženie prvku
     public void insert(String key, int value) {
 
-        //System.out.println("VKLADAM " + key);
-        // checking the size of table and
-        // comparing it with users input value
+       //zistenie či tabulka je plná
         if (size == HASH_TABLE_SIZE) {
-
-            // Display message
             System.out.println("Table is full");
             return;
         }
 
-        int hashing1 = myhash1(key);
-        int hashing2 = myhash2(key);
+        int hashing1 = myhash1(key); // prvé hashovanie
+        int hashing2 = myhash2(key); // druhý hash
+
         while (table[hashing1] != null) {
             hashing1 += hashing2;
             hashing1 %= HASH_TABLE_SIZE;
@@ -154,23 +116,7 @@ class HashTable {
         size++;
     }
 
-    // Method 5
-    // To remove a key
-    public void remove(String key) {
-        int hash1 = myhash1(key);
-        int hash2 = myhash2(key);
-        while (table[hash1] != null
-                && !table[hash1].name.equals(key)) {
-            hash1 += hash2;
-            hash1 %= HASH_TABLE_SIZE;
-        }
-        table[hash1] = null;
-        size--;
-    }
-
-    // Method 6
-    // Function gives a hash value for a given
-    // string basically it is linear probing
+   //prvé hashovanie
     private int myhash1(String y) {
         int myhashVal1 = y.hashCode();
         myhashVal1 %= HASH_TABLE_SIZE;
@@ -179,26 +125,17 @@ class HashTable {
         return myhashVal1;
     }
 
-    // Method 7
-    // Remember that the above function namely 'myhash'
-    // is used for double hashing
-
-    // Now after linear probing, quadratic probing
-    // is used in which two myhash functions are used
-    // as it is double chaining
+    //druhé hashovanie
     private int myhash2(String y) {
         int myhashVal2 = y.hashCode();
         myhashVal2 %= HASH_TABLE_SIZE;
         if (myhashVal2 < 0)
             myhashVal2 += HASH_TABLE_SIZE;
-        return totalprimeSize - myhashVal2 % totalprimeSize;
+        return totalprimeSize - myhashVal2 % totalprimeSize; // finálny výpočet hashu
     }
 
-    // Method 8
-    // To print the hash table
+    // metóda moja
     public int zistitPocetVolnych() {
-        // Display message
-        //System.out.println("\nHash Table");
         int pocetVolnych = 0;
         for (int i = 0; i < HASH_TABLE_SIZE; i++) {
             if (table[i] == null) {
@@ -210,12 +147,8 @@ class HashTable {
 
 }
 
-// Class 3
-// Main class
-// Class for DoubleHashingHashTableTest
-class HashTableMain {
 
-    // Main driver method
+class HashTableMain {
     public static void main(String[] args)
     {
 
@@ -229,6 +162,7 @@ class HashTableMain {
     public static void r1_testovac(int velkostVstupu){
         String path = null;
         int velkostPola = 100000;
+        ValueEntry najdenynode;
 
         if(velkostVstupu == 3) {
             System.out.println("-------------------------\n--> VSTUP | 100 000 | <--");
@@ -263,6 +197,38 @@ class HashTableMain {
                 "\nLenght of array: " + velkostPola +
                 "\nFree array indexes: " + table.zistitPocetVolnych() +
                 "\nSearched nodes: " + table.pocetNajdeni);
+
+        long startSingle = System.currentTimeMillis();
+        if(velkostVstupu == 3) {
+            //Evie Villiger,73
+            System.out.println("Searching for: Evie Villiger,73" );
+            najdenynode=table.getkey("Evie Villiger");
+            System.out.println("Loaded node: "+ najdenynode.name +
+                    " age " +  najdenynode.vek);// +
+            //"\nbalance " + najdenynode.balance +
+            //" height of node " + najdenynode.height);
+
+
+        } else if(velkostVstupu == 2){
+            System.out.println("Searching for: Alan Parker,86" );
+            najdenynode=table.getkey("Alan Parker");
+            System.out.println("SLoaded node: "+ najdenynode.name +
+                    " age " +  najdenynode.vek );// +
+            //"\nbalance " + najdenynode.balance +
+            //" height of node " + najdenynode.height);
+
+        }else if (velkostVstupu == 1){
+            System.out.println("Searching for: Sonya Jenkin, 63 " );
+            najdenynode=table.getkey("Sonya Jenkin");
+            System.out.println("Loaded node: "+ najdenynode.name +
+                    " age " +  najdenynode.vek );// +
+            //"\nbalance " + najdenynode.balance +
+            //" height of node " + najdenynode.height);
+        }
+
+        long finishSingle = System.currentTimeMillis();
+        long timeElapsedSingle = finishSingle - startSingle;
+        System.out.println("search time 1 node " + timeElapsedSingle + "ms...");
     }
 
     public static void vkladanieDoTabulky(HashTable table, String path){

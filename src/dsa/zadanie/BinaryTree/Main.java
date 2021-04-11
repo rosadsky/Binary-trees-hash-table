@@ -94,7 +94,7 @@ class Main{
 
         }else if (velkostVstupu == 1){
             System.out.println("Searching for: Sonya Jenkin, 63 " );
-            najdenynode=strom.searchKey(strom.root,"Sonya Jenkin",64);
+            najdenynode=strom.searchKey(strom.root,"Sonya Jenkin",63);
             System.out.println("Loaded node: "+ najdenynode.name +
                     " age " +  najdenynode.vek +
                     "\nbalance " + najdenynode.balance +
